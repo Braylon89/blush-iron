@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10191f">
+  <meta name="description" content="Pilot a pink and chrome mech. Blast drones, dodge incoming fire, and take down the Iron Warden. A browser game by Braylon.">
+  <title>BLUSH // IRON — Mech arena</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="masthead">
+      <div><a class="creator" href="https://github.com/Braylon89">BRAYLON'S ARCADE <span>↗</span></a><h1>BLUSH <i>//</i> IRON<span class="edition">01</span></h1></div>
+      <div class="header-right"><span class="build-tag">HEAVY METAL. SOFT COLORS.</span><div class="settings"><button id="sound" aria-pressed="false">Sound <span>off</span></button><button id="assist" aria-pressed="false">Aim assist <span>off</span></button><button id="pause" disabled aria-label="Pause game">Ⅱ</button></div></div>
+    </header>
+    <main>
+      <section class="cockpit" aria-label="Mech status">
+        <div class="meter"><div class="meter-label"><span><b class="dot"></b> ARMOR</span><strong id="armor-value">100</strong></div><div class="track"><div id="armor-bar"></div></div></div>
+        <div class="meter heat-meter"><div class="meter-label"><span>WEAPON HEAT</span><strong id="heat-value">0%</strong></div><div class="track"><div id="heat-bar"></div></div></div>
+        <div class="readout"><span>WAVE</span><strong><b id="wave">01</b><small> / 05</small></strong></div>
+        <div class="readout score-readout"><span>SCORE</span><strong id="score">00000</strong></div>
+        <div class="readout hostile-readout"><span>HOSTILES</span><strong id="hostiles">—</strong></div>
+      </section>
+      <section class="arena" aria-label="Mech battle arena">
+        <canvas id="battle" width="1200" height="760" tabindex="0" aria-label="Mech arena. Move with W A S D or arrows. Aim with the mouse, hold click to fire. Space boosts, Q launches a missile salvo, F toggles aim assist, Escape pauses."></canvas>
+        <div class="arena-label"><span class="live-dot"></span> SECTOR 07 <span class="arena-label-right">CHROME SALVAGE YARD</span></div>
+        <div id="overlay" class="overlay">
+          <div class="overlay-card" id="overlay-card">
+            <p class="eyebrow">COMBAT FRAME / B-01</p><h2>Pretty paint.<br><em>Heavy firepower.</em></h2>
+            <p class="brief">The salvage yard is crawling with rogue machines. Clear five waves and bring down the Iron Warden.</p>
+            <div class="mission-details"><span><b>01</b> Move &amp; aim</span><span><b>02</b> Blast &amp; boost</span><span><b>03</b> Upgrade your mech</span></div>
+            <button id="start" class="primary">DEPLOY MECH <span>↗</span></button><p class="overlay-note">No download. Just drop in.</p>
+          </div>
+        </div>
+        <div class="combat-toast" id="combat-toast" role="status"></div>
+      </section>
+      <div class="lower-console">
+        <p class="controls"><kbd>W A S D</kbd> move <span>·</span> Mouse aim + fire <span>·</span> <kbd>SPACE</kbd> boost <span>·</span> <kbd>Q</kbd> missiles <span>·</span> <kbd>F</kbd> aim assist <span>·</span> <kbd>ESC</kbd> pause</p>
+        <div class="abilities"><button id="boost" disabled>BOOST <span id="boost-status">READY</span></button><button id="salvo" disabled>SALVO <span id="salvo-status">READY</span></button></div>
+      </div>
+      <div class="mobile-controls" aria-label="Touch controls">
+        <div class="dpad"><button data-direction="up" class="up" aria-label="Move up">↑</button><button data-direction="left" class="left" aria-label="Move left">←</button><button data-direction="down" class="down" aria-label="Move down">↓</button><button data-direction="right" class="right" aria-label="Move right">→</button></div>
+        <p>Hold a direction.<br>Fire aims at the nearest enemy.</p><button id="touch-fire" class="touch-fire">FIRE <span>✳</span></button>
+      </div>
+      <footer><span id="mission-status" aria-live="polite">Pilot standing by.</span><span>BEST <strong id="best-score">00000</strong> <a href="https://github.com/Braylon89" aria-label="Braylon on GitHub">BY BRAYLON ↗</a></span></footer>
+    </main>
+  </div>
+  <script type="module" src="game.mjs"></script>
+</body>
+</html>

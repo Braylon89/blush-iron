@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#10191f">
-  <meta name="description" content="Pilot a pink and chrome mech. Blast drones, dodge incoming fire, and take down the Iron Warden. A browser game by Braylon.">
-  <title>BLUSH // IRON — Mech arena</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="theme-color" content="#e6cef0">
+  <meta name="description" content="A colorful first-person mech shooter by Braylon. Pink armor, chrome cannons, pastel skies, and five waves of rogue machines.">
+  <title>BLUSH // IRON — First-person mech shooter</title>
+  <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <div class="shell">
     <header class="masthead">
-      <div><a class="creator" href="https://github.com/Braylon89">BRAYLON'S ARCADE <span>↗</span></a><h1>BLUSH <i>//</i> IRON<span class="edition">01</span></h1></div>
-      <div class="header-right"><span class="build-tag">HEAVY METAL. SOFT COLORS.</span><div class="settings"><button id="sound" aria-pressed="false">Sound <span>off</span></button><button id="assist" aria-pressed="false">Aim assist <span>off</span></button><button id="pause" disabled aria-label="Pause game">Ⅱ</button></div></div>
+      <div><a class="creator" href="https://github.com/Braylon89">BRAYLON'S LITTLE UNIVERSE <span>✧</span></a><h1>BLUSH <i>//</i> IRON<span class="edition">FPS / 01</span></h1></div>
+      <div class="header-right"><span class="build-tag">HEAVY METAL. SOFT COLORS. ✧</span><div class="settings"><button id="sound" aria-pressed="false">Sound <span>off</span></button><button id="assist" aria-pressed="true">Aim assist <span>on</span></button><button id="pause" disabled aria-label="Pause game">Ⅱ</button></div></div>
     </header>
     <main>
       <section class="cockpit" aria-label="Mech status">
@@ -22,30 +22,36 @@
         <div class="readout score-readout"><span>SCORE</span><strong id="score">00000</strong></div>
         <div class="readout hostile-readout"><span>HOSTILES</span><strong id="hostiles">—</strong></div>
       </section>
-      <section class="arena" aria-label="Mech battle arena">
-        <canvas id="battle" width="1200" height="760" tabindex="0" aria-label="Mech arena. Move with W A S D or arrows. Aim with the mouse, hold click to fire. Space boosts, Q launches a missile salvo, F toggles aim assist, Escape pauses."></canvas>
-        <div class="arena-label"><span class="live-dot"></span> SECTOR 07 <span class="arena-label-right">CHROME SALVAGE YARD</span></div>
+      <section class="arena" id="arena" aria-label="First-person mech battle arena">
+        <canvas id="battle" width="1200" height="760" tabindex="0" aria-label="First-person mech shooter. W A S D moves, mouse looks, hold left click to fire. Space boosts, Q launches missiles, Escape pauses and releases the mouse. Arrow keys turn and move; Enter also fires. Touch: drag the arena to look, use movement buttons, hold FIRE."></canvas>
+        <div class="arena-label"><span class="live-dot"></span> SECTOR 07 <span class="arena-label-right">FIRST PERSON / FRAME B-01</span></div>
+        <div class="visor" aria-hidden="true"></div>
+        <div id="crosshair" class="crosshair" hidden aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
+        <div id="boss-hud" class="boss-hud" hidden><span>IRON WARDEN</span><div><i id="boss-bar"></i></div></div>
+        <div id="threat" class="threat" hidden></div>
+        <div id="look-status" class="look-status" hidden>DRAG TO LOOK · CLICK TO CAPTURE</div>
+        <div id="loading" class="loading">WAKING UP YOUR MECH…</div>
         <div id="overlay" class="overlay">
           <div class="overlay-card" id="overlay-card">
-            <p class="eyebrow">COMBAT FRAME / B-01</p><h2>Pretty paint.<br><em>Heavy firepower.</em></h2>
-            <p class="brief">The salvage yard is crawling with rogue machines. Clear five waves and bring down the Iron Warden.</p>
-            <div class="mission-details"><span><b>01</b> Move &amp; aim</span><span><b>02</b> Blast &amp; boost</span><span><b>03</b> Upgrade your mech</span></div>
-            <button id="start" class="primary">DEPLOY MECH <span>↗</span></button><p class="overlay-note">No download. Just drop in.</p>
+            <p class="eyebrow">A FIRST-PERSON MECH SHOOTER</p><h2>Pastel skies.<br><em>Chrome thunder.</em></h2>
+            <p class="brief">Step inside your pink mech. Blast five waves of rogue machines and take down the Iron Warden.</p>
+            <div class="mission-details"><span><b>01</b> Look around</span><span><b>02</b> Blast &amp; boost</span><span><b>03</b> Make it yours</span></div>
+            <button id="start" class="primary">DEPLOY MECH <span>↗</span></button><p class="overlay-note"><span class="desktop-note">Mouse to look · Hold click to fire · Escape to release</span><span class="touch-note">Drag to look · Direction buttons to move · Hold FIRE</span></p>
           </div>
         </div>
         <div class="combat-toast" id="combat-toast" role="status"></div>
       </section>
       <div class="lower-console">
-        <p class="controls"><kbd>W A S D</kbd> move <span>·</span> Mouse aim + fire <span>·</span> <kbd>SPACE</kbd> boost <span>·</span> <kbd>Q</kbd> missiles <span>·</span> <kbd>F</kbd> aim assist <span>·</span> <kbd>ESC</kbd> pause</p>
+        <p class="controls"><kbd>W A S D</kbd> move <span>·</span> Mouse look + click fire <span>·</span> <kbd>SPACE</kbd> boost <span>·</span> <kbd>Q</kbd> missiles <span>·</span> <kbd>ESC</kbd> pause<br><span class="keyboard-alt">Keyboard only? Arrows look + move, Enter fires.</span></p>
         <div class="abilities"><button id="boost" disabled>BOOST <span id="boost-status">READY</span></button><button id="salvo" disabled>SALVO <span id="salvo-status">READY</span></button></div>
       </div>
       <div class="mobile-controls" aria-label="Touch controls">
-        <div class="dpad"><button data-direction="up" class="up" aria-label="Move up">↑</button><button data-direction="left" class="left" aria-label="Move left">←</button><button data-direction="down" class="down" aria-label="Move down">↓</button><button data-direction="right" class="right" aria-label="Move right">→</button></div>
-        <p>Hold a direction.<br>Fire aims at the nearest enemy.</p><button id="touch-fire" class="touch-fire">FIRE <span>✳</span></button>
+        <div class="dpad"><button data-direction="up" class="up" aria-label="Move forward">↑</button><button data-direction="left" class="left" aria-label="Strafe left">←</button><button data-direction="down" class="down" aria-label="Move backward">↓</button><button data-direction="right" class="right" aria-label="Strafe right">→</button></div>
+        <p>Drag the arena to look.<br>Hold FIRE to shoot.</p><button id="touch-fire" class="touch-fire">FIRE <span>✳</span></button>
       </div>
       <footer><span id="mission-status" aria-live="polite">Pilot standing by.</span><span>BEST <strong id="best-score">00000</strong> <a href="https://github.com/Braylon89" aria-label="Braylon on GitHub">BY BRAYLON ↗</a></span></footer>
     </main>
   </div>
-  <script type="module" src="game.mjs"></script>
+  <script type="module" src="game.mjs?v=4"></script>
 </body>
 </html>
